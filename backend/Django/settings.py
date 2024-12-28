@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,6 +43,9 @@ INSTALLED_APPS = [
     'Djangoapp',
     'knox',
     'django_rest_passwordreset',
+    'rest_framework_simplejwt.token_blacklist',
+    'drf_yasg',
+    
 ]
 
 MIDDLEWARE = [
@@ -74,8 +78,8 @@ DEFAULT_FROM_EMAIL ='StudyBuddy <sasshair.024@gmail.com>'
 EMAIL_HOST_USER = os.environ.get("EmailHost")
 EMAIL_HOST_PASSWORD = os.environ.get("EmailPassword")
 
-print(os.environ.get("EmailHost"))
-print(os.environ.get("EmailPassword"))
+# print(os.environ.get("EmailHost"))
+# print(os.environ.get("EmailPassword"))
 
 ROOT_URLCONF = 'Django.urls'
 
@@ -150,8 +154,93 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
-
+MEDIA_URL ='media/'
+MEDIA_ROOT =BASE_DIR/'media'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Studybuddy",
+    "site_header": "Admin",
+    "site_brand": "StudyBuddy ",
+    "welcome_sign": "Welcome To StudyBudy",
+    "user_avatar": "images/photos/logo.jpg",
+    "copyright": "StudyBuddy",
+    "topmenu_links": [
+        {"name": "Dashboard", "url": "home", "permissions": ["auth.view_user"]},
+        {"model": "auth.User"},
+    ],
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "order_with_respect_to": [
+        "Djangoapp",
+        "Djangoapp.Post",
+        "Djangoapp.Topic",
+        "Djangoapp.Comment",
+        "Djangoapp.Bookmarks",
+        "Djangoapp.Notif",
+    ],
+    "icons": {
+        "admin.LogEntry": "fas fa-file",
+
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+
+        "Djangoapp.CustomUser": "fas fa-user",
+        "Djangoapp.Profile":"fas fa-address-card",
+        "Djangoapp.Post":"fas fa-th",
+        "Djangoapp.Topic":"fas fa-tag",
+        "Djangoapp.Comment":"fas fa-envelope",
+        "Djangoapp.Notif":"fas fa-bell",
+        "Djangoapp.Bookmarks":"fas fa-heart",
+
+        
+    },
+    "default_icon_parents": "fas fa-chevron-circle-right",
+    "default_icon_children": "fas fa-arrow-circle-right",
+    "related_modal_active": False,
+    
+    "custom_js": None,
+    "show_ui_builder": True,
+    
+    "changeform_format": "horizontal_tabs",
+    "changeform_format_overrides": {
+        "auth.user": "collapsible",
+        "auth.group": "vertical_tabs",
+    },
+}
+
+
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": False,
+    "footer_small_text": False,
+    "body_small_text": True,
+    "brand_small_text": False,
+    "brand_colour": "navbar-purple",
+    "accent": "accent-olive",
+    "navbar": "navbar-purple navbar-dark",
+    "no_navbar_border": False,
+    "navbar_fixed": False,
+    "layout_boxed": False,
+    "footer_fixed": False,
+    "sidebar_fixed": False,
+    "sidebar": "sidebar-light-purple",
+    "sidebar_nav_small_text": False,
+    "sidebar_disable_expand": False,
+    "sidebar_nav_child_indent": False,
+    "sidebar_nav_compact_style": False,
+    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_flat_style": False,
+    "theme": "default",
+    "dark_mode_theme": None,
+    "button_classes": {
+        "primary": "btn-outline-primary",
+        "secondary": "btn-outline-secondary",
+        "info": "btn-info",
+        "warning": "btn-warning",
+        "danger": "btn-danger",
+        "success": "btn-success"
+    }
+}
