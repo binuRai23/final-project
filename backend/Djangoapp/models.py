@@ -122,9 +122,8 @@ class Topic(models.Model):
     def __str__(self):
         return self.title
     
-    # class Meta:
-    #     ordering=["-date"]
-    #     verboseName="Post"
+    class Meta:
+       verbose_name_plural="Topic"
         
     def save(self, *args, **kwargs):
         if self.slug=="" or self.slug == None:
@@ -142,9 +141,11 @@ class Post(models.Model):
     )
     user=models.ForeignKey(CustomUser,on_delete=models.CASCADE)
     profile=models.ForeignKey(Profile,on_delete=models.CASCADE, null= True,blank=True)
+    video = models.FileField(upload_to="videos", null=True, blank=True)  
     picture=models.FileField(upload_to="image",null=True,blank=True)
     slug=models.SlugField(unique=True,null=True,blank=True)
     title=models.CharField(max_length=100)
+    tags= models.CharField(max_length=100, null=True,blank=True)
     content =models.TextField(null=True,blank=True)
     topic=models.ForeignKey(Topic,on_delete=models.CASCADE,null=True,blank=True,related_name='posts')
     status=models.CharField(choices=STATUS,max_length=100,default="Active")
@@ -202,7 +203,8 @@ class Notif(models.Model):
     feed = models.ForeignKey(Post,on_delete=models.CASCADE)
     date=models.DateTimeField(auto_now_add=True)
     type= models.CharField(choices=Type,max_length=100)
-    
+    seen= models.BooleanField(default=False)
+            
     def __str__(self):
         if self.feed:
             return f"{self.feed.title} - {self.type}"

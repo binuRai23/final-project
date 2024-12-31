@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./password.css";
+import "./Css/password.css";
 import MyTextField from "./forms/MyTextField";
 import Mybutton from "./forms/Mybutton";
 import { Link } from "react-router-dom";

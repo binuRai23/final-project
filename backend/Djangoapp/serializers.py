@@ -81,6 +81,8 @@ class ComSerializer(serializers.ModelSerializer):
             self.Meta.depth = 1
             
 class PostSerializer(serializers.ModelSerializer):
+    topic = serializers.PrimaryKeyRelatedField(queryset=Topic.objects.all(), required=True)
+
     class Meta:
         model = Post
         fields = '__all__'
@@ -91,7 +93,7 @@ class PostSerializer(serializers.ModelSerializer):
         if request and request.method =="POST":
             self.Meta.depth = 0
         else:
-            self.Meta.depth = 1
+            self.Meta.depth = 3
 
 class MarkSerializer(serializers.ModelSerializer):
     class Meta:

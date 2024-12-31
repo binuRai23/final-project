@@ -202,3 +202,124 @@ class BlogDash(generics.ListAPIView):
         queryset= self.get_queryset()
         serializer = self.get_serializer(queryset,many=True)
         return Response(serializer.data)
+    
+class CreatePost(generics.CreateAPIView):
+    serializer_class= PostSerializer
+    permission_classes= [permissions.AllowAny]
+    
+    def create(self, request,*args, **kwargs):
+        print(request.data)
+        
+        user_id = request.data.get("user_id")
+        title = request.data.get("title")
+        topic = request.data.get("topic")
+        picture = request.data.get("picture")
+        content = request.data.get("content")
+        tags = request.data.get("tags")
+        status = request.data.get("status")
+        video = request.data.get("video")
+    
+        user= CustomUser.ibjects.get(id=user_id)
+        topic = Topic.objects.get(id=topic)
+        
+        Post.objects.create(
+            user=user,
+            title=title,
+            picture=picture,
+            content=content,
+            tags=tags,
+            topic=topic,
+            status=status,
+            video= video
+        )
+        return Response({"message":"post created successfully!!"},status=status.HTTP_201_CREATED)
+    
+class DashPostlist(generics.ListAPIView):
+        serializer_class= PostSerializer
+        permission_classes=[permissions.AllowAny]
+        
+        def get_queryset(self):
+           user_id=self.kwargs['use_id']
+           user=CustomUser.User.objects.get(id=user_id)
+           return Post.objects.filter(user=user).order_by("-id")
+    
+class Comlist(generics.ListAPIView):
+        serializer_class=ComSerializer
+        permission_classes=[permissions.AllowAny]
+        
+        def get_queryset(self):
+            user_id=self.kwargs['user_id']
+            user=CustomUser.objects.get(id=user_id)
+           
+            return Comment.objects.filter(post__user=user)
+    
+class DashNotiflist(generics.ListAPIView):
+        serializer_class=NotifSerializer
+        permission_classes=[permissions.AllowAny]
+        
+        def get_queryset(self):
+            user_id=self.kwargs['user_id']
+            user=CustomUser.objects.get(id=user_id)
+           
+            return Notif.objects.filter(seen=False,user=user)
+    
+class seenNotif(APIView):
+        def post(self,request):
+            notif_id = request.data['notif_id']
+            notif= Notif.objects.get(id='notif_id')
+            
+            seen=True
+            notif.save()
+            
+            return Response({"message":"notification marked as seen"},status=status.HTTP_200_OK)
+        
+class CommentReply(APIView):
+        
+        def post(self,request):
+            com_id = request.data['com_id']
+            reply = request.data['reply']
+            
+            comment=Comment.objects.get(id=com_id)
+            comment.reply=reply
+            
+            comment.save()
+            
+            return Response({"message":"Comment response sent"},status=status.HTTP_201_CREATED)
+        
+class UpdatePost(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class=PostSerializer
+    permission_classes=[permissions.AllowAny]
+    
+    def get_object(self):
+        user_id = self.kwargs['user_id']
+        user= CustomUser.objects.get(id=user_id)
+        post_id=self.kwargs['post_id']
+      
+        return Post.objects.get(user=user,id=post_id)
+    
+    def update(self,request,*args, **kwargs):
+        post_instance=self.get_object()
+        
+        title=request.data.get("title")
+        picture = request.data.get("picture")
+        topic= request.data.get("topic")
+        content = request.data.get("content")
+        tags = request.data.get("tags")
+        status_value = request.data.get("status")
+        video = request.data.get("video")
+        
+        topic = Topic.objects.get(id=topic)
+        
+        post_instance.title=title
+        if picture != "undefined":
+            post_instance.picture=picture
+        post_instance.topic=topic
+        post_instance.content=content
+        post_instance.tags=tags        
+        post_instance.status=status_value
+        if video != "undefined":
+            post_instance.video=video
+        
+        post_instance.save()
+    
+        return Response({"message": "post updated successfully"},status=status.HTTP_200_OK)

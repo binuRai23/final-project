@@ -41,9 +41,15 @@ function Navbar(props) {
       <CssBaseline />
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
-          <Typography variant="h6" noWrap component="div">
-            Clipped drawer
-          </Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+      <Typography variant="body1" component={Link} to="/profile" style={{ textDecoration: 'none', color: 'inherit' }}>
+        Profile
+      </Typography>
+      <Typography variant="body1" component={Link} to="/settings" style={{ textDecoration: 'none', color: 'inherit' }}>
+        Settings
+      </Typography>
+      
+    </Box>
         </Toolbar>
       </AppBar>
       <Drawer

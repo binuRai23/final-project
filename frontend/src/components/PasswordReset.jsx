@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./password.css";
+import "./Css/password.css";
 import MyPassField from "./forms/MyPassField";
 import Mybutton from "./forms/Mybutton";
 import { useParams} from "react-router-dom";

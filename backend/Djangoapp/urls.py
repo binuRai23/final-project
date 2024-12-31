@@ -21,6 +21,14 @@ urlpatterns = [
     path('likes/',LikeView.as_view(),name='like'),
     path('comment/',CommentView.as_view(),name='comment'),
     path('bookmark/',BookmarkView.as_view(),name='bookmark'),
+    # for dashboard
     path('blogdash/stats/<user_id>/',BlogDash.as_view(),name='blogdash'),
+    path('postcreate/',CreatePost.as_view(),name='postcreate'),
+    path('commentlist/<user_id>/',Comlist.as_view(),name='commentlist'),
+    path('notifseen/',seenNotif.as_view(),name='seennotification'),
+    path('notiflist/<user_id>/',DashNotiflist.as_view(),name='notificationlist'),
+    path('commentreply/',CommentReply.as_view(),name='commentreply'),
+    path('updatepost/<user_id>/<post_id>/',UpdatePost.as_view(),name='updatepost'),
+    
 ]+ router.urls 
-
+ 

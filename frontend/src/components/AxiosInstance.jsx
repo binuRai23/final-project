@@ -37,5 +37,9 @@ AxiosInstance.interceptors.response.use(
         }
     }
 )
+export const getPosts = () => AxiosInstance.get('/djangoapp/postlist/');
+export const getPostDetail = (slug) => AxiosInstance.get(`/djangoapp/postdetail/${slug}/`);
 
+export const getTopics = () => AxiosInstance.get('djangoapp/topics/');
+export const postComment = (data) => AxiosInstance.post('djangoapp/comments/', data);
 export default AxiosInstance
